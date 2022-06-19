@@ -9,30 +9,30 @@ import { User, UserDocument } from './entities/user.entity';
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
-    create(createUserDto: CreateUserDto) {
+    async create(createUserDto: CreateUserDto): Promise<User> {
         const user = new this.userModel(createUserDto);
         return user.save();
     }
 
-    findAll() {
-        return this.userModel.find();
+    async findAll(): Promise<User[]> {
+        return await this.userModel.find();
     }
 
-    findOne(id: string) {
-        return this.userModel.findById(id);
+    async findOne(id: string): Promise<User> {
+        return await this.userModel.findById(id);
     }
 
-    update(id: string, updateUserDto: UpdateUserDto) {
-        return this.userModel.findByIdAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true });
+    async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+        return await this.userModel.findByIdAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true });
     }
 
-    remove(id: string) {
-        return this.userModel.deleteOne(
+    async remove(id: string): Promise<any> {
+        return await this.userModel.deleteOne(
             { _id: id }
         ).exec();
     }
 
-    findByEmail(email: string) {
-        return this.userModel.findOne({ email });
+    async findByEmail(email: string): Promise<User> {
+        return await this.userModel.findOne({ email });
     }
 }
